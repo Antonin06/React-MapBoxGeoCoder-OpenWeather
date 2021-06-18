@@ -3,10 +3,15 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import Test from "./Test1";
+import MapView from "./Test1";
+import Map from "./Test1";
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    {/*<App />*/}
+    {/*<Map/>*/}
+      <Test/>
   </React.StrictMode>,
   document.getElementById('root')
 );
