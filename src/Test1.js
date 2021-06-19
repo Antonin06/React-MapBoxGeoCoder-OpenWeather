@@ -1,35 +1,43 @@
 import React, { useRef, useEffect, useState } from 'react';
 import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
-import Geocoder from 'react-map-gl-geocoder';
+import Geocoder from 'react-mapbox-gl-geocoder'
+import ReactMapGL from 'react-map-gl'
 
-mapboxgl.accessToken = 'pk.eyJ1IjoiYW50b25pbjA2IiwiYSI6ImNrcTE5bWx4eTBjajkyc3FycXNrbWxhazEifQ.mnLB0CdJLi7WCb7flAVc6Q';
+const mapAccess = {
+	mapboxApiAccessToken: 'pk.eyJ1IjoiYW50b25pbjA2IiwiYSI6ImNrcTE5bWx4eTBjajkyc3FycXNrbWxhazEifQ.mnLB0CdJLi7WCb7flAVc6Q'
+}
+
+const mapStyle = {
+	width: '100%',
+	height: 600
+}
+
+const queryParams = {
+	zoom: 8
+}
 
 export default function Test() {
-	const mapContainer = useRef(null);
-	const map = useRef(null);
-	const [lng, setLng] = useState(-70.9);
-	const [lat, setLat] = useState(42.35);
-	const [zoom, setZoom] = useState(9);
-	const [query, setQuery] = useState([]);
-	const mapRef = useRef();
 
-	useEffect(() => {
-		if (map.current) return; // initialize map only once
-		map.current = new mapboxgl.Map({
-			container: mapContainer.current,
-			style: 'mapbox://styles/mapbox/streets-v11',
-			center: [lng, lat],
-			zoom: zoom
-		});
-	});
+const [viewport, setViewport] = useState({});
+
+	// onSelected = (viewport, item) => {
+	// 	this.setState({viewport});
+	// 	console.log('Selected: ', item)
+	// }
+console.log(viewport);
 
 	return (
 		<div>
 			<Geocoder
-				mapRef={mapRef}
-				mapboxApiAccessToken={mapboxgl.accessToken}
+				{...mapAccess} onSelected={setViewport} onResult={console.log('oto')} viewport={viewport} hideOnSelect={true}
+				queryParams={queryParams}
 			/>
-			<div ref={mapContainer} className="map-container" />
+
+			<ReactMapGL
+				{...mapAccess} {...viewport} {...mapStyle}
+				onViewportChange={(newViewport) => setViewport({viewport: newViewport})}
+			/>
+
 		</div>
 	);
 }
